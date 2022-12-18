@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Animation_in_console;
+using SimulationGame;
 
 Console.WriteLine("Hello, World!");
 World mainW = World.GetInstance();

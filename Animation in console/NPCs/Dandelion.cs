@@ -4,8 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SimulationGame.Interfaces;
 
-namespace Animation_in_console
+namespace SimulationGame.NPCs
 {
     internal class Dandelion : Plant
     {
@@ -13,7 +14,7 @@ namespace Animation_in_console
         {
             overwriteSpiecesData();
             localisation = IFieldNavigation.GetRandomPlace();
-            if(localisation == new Point(-1, -1)) { noLegalPlaceFromRandomMSG(); }
+            if (localisation == new Point(-1, -1)) { noLegalPlaceFromRandomMSG(); }
             else
             {
                 callIInitiationHandler();

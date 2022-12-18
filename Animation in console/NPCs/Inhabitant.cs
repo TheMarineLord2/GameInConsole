@@ -4,8 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SimulationGame.Interfaces;
 
-namespace Animation_in_console
+namespace SimulationGame.NPCs
 {
     internal abstract class Inhabitant
     {
@@ -39,7 +40,7 @@ namespace Animation_in_console
         public Point GetLocalisation() { return localisation; }
         public OrganismTypes GetSpieces() { return spieces; }
         public int GetStr() { return str; }
-        public void Print() { System.Console.Write(visualRepr); }
+        public void Print() { Console.Write(visualRepr); }
         public abstract void Action();
         //-----------------------------
         protected virtual void callIInitiationHandler()
@@ -50,12 +51,12 @@ namespace Animation_in_console
         {
             if (IFieldNavigation.GetNumberOfFreeSpaces() == 0)
             {
-                System.Console.WriteLine("Inhabitant: No free space is aviable \n" +
+                Console.WriteLine("Inhabitant: No free space is aviable \n" +
                 "Returning illegal place.\n");
                 return new(-1, -1);
             }
             else return IFieldNavigation.GetRandomPlace();
         }
-        protected void noLegalPlaceFromRandomMSG(){ System.Console.WriteLine(spieces + ": Not calling initiation handler. No legal place was returned from random \n"); }
+        protected void noLegalPlaceFromRandomMSG() { Console.WriteLine(spieces + ": Not calling initiation handler. No legal place was returned from random \n"); }
     }
 }

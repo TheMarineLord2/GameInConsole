@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Animation_in_console
+namespace SimulationGame.NPCs
 {
-    internal abstract class Plant:Inhabitant
+    internal abstract class Plant : Inhabitant
     {
     }
 }

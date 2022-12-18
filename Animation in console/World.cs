@@ -6,8 +6,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using SimulationGame.NPCs;
+using SimulationGame.Interfaces;
 
-namespace Animation_in_console
+namespace SimulationGame
 {
 
     struct Field
@@ -35,37 +37,40 @@ namespace Animation_in_console
         //po zadeklarowaniu odpowiedniej ilości
         //pochodnych LifeForm, zaimplementuj je
         //w formie pyłku
-        private World() {}
-        private static World? inst=null;
+        private World() { }
+        private static World? inst = null;
         private List<Inhabitant> inhabitants = new();
         //world propeties:
-        private const int volume=5;
+        private const int volume = 5;
         private const string emptyFieldRepresentation = "   ";
         private const string gapBetweenFields = "\t";
         private const ConsoleColor backgroundColor = ConsoleColor.Black;
         private const ConsoleColor fieldColor = ConsoleColor.DarkGray;
         private const ConsoleColor pencilColor = ConsoleColor.Gray;
         //------------------public---------------------
-        static public World GetInstance() {
-            if (inst==null) { inst = new World(); }
+        static public World GetInstance()
+        {
+            if (inst == null) { inst = new World(); }
             return inst;
         }
         public int GetVolume() { return volume; }
-        public void TakeATurn() {
+        public void TakeATurn()
+        {
             callActions();
             print();
         }
-        public int GetNumberOfFreeSpaces() {
+        public int GetNumberOfFreeSpaces()
+        {
             int freeSpaces = volume * volume;
-            return freeSpaces-inst.inhabitants.Count();
+            return freeSpaces - inst.inhabitants.Count();
         }
         public Field GetField(Point localisation)
         {
-            if(inhabitants.Count()==0) return new Field(localisation);
+            if (inhabitants.Count() == 0) return new Field(localisation);
             else
             {
-                Inhabitant[] arr =inhabitants.ToArray();
-                for(int i = 0; i < arr.Length; i++)
+                Inhabitant[] arr = inhabitants.ToArray();
+                for (int i = 0; i < arr.Length; i++)
                 {
                     if (arr[i].GetX() == localisation.X && arr[i].GetY() == localisation.Y) return new Field(arr[i]);
                 }
@@ -77,7 +82,7 @@ namespace Animation_in_console
             inhabitants.Add(inhabitant);
             //sort by initiative
         }
-        public void Reset(bool safety=false)
+        public void Reset(bool safety = false)
         {
             if (safety)
             {
@@ -85,19 +90,20 @@ namespace Animation_in_console
             }
         }
         //-------------------private---------------------
-        private void print() {
-            System.Console.Clear();
+        private void print()
+        {
+            Console.Clear();
             List<Inhabitant> inhabQueue = getInhabPrintQueue();
-            foreach(Inhabitant dand in inhabQueue)
+            foreach (Inhabitant dand in inhabQueue)
             {
-                System.Console.WriteLine(dand.GetSpieces() + ":   x:" + dand.GetX() + ",   y:" + dand.GetY() +"\n");
+                Console.WriteLine(dand.GetSpieces() + ":   x:" + dand.GetX() + ",   y:" + dand.GetY() + "\n");
             }
             int numbOfInhabPrinted = 0;
             for (int y = 0; y < volume; y++)
             {
-                for(int x = 0; x < volume; x++)
+                for (int x = 0; x < volume; x++)
                 {
-                    if (inhabQueue.Count == numbOfInhabPrinted )
+                    if (inhabQueue.Count == numbOfInhabPrinted)
                     {
                         printEmptyField();
                     }
@@ -107,7 +113,7 @@ namespace Animation_in_console
                         printGapBetweenFields();
                         numbOfInhabPrinted++;
                     }
-                    else { printEmptyField();}
+                    else { printEmptyField(); }
                 }
 
                 /*
@@ -132,20 +138,23 @@ namespace Animation_in_console
             Console.BackgroundColor = backgroundColor;
             Console.Write(gapBetweenFields);
         }
-        private void printInhabRepresentation(Inhabitant inhabitant) {
+        private void printInhabRepresentation(Inhabitant inhabitant)
+        {
             inhabitant.Print();
             Console.Write(" ");
         }
-        private List<Inhabitant> getInhabPrintQueue(){
+        private List<Inhabitant> getInhabPrintQueue()
+        {
             List<Inhabitant> resultQ = new List<Inhabitant>(inhabitants);
             resultQ.Sort(CompareInhabByX);
             resultQ.Sort(CompareInhabByY);
             return resultQ;
         }
 
-        private void callActions() {
+        private void callActions()
+        {
             foreach (Inhabitant inhabitant in inhabitants)
-            {   
+            {
                 inhabitant.Action();
             }
         }
