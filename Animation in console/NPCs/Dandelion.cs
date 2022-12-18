@@ -12,7 +12,6 @@ namespace SimulationGame.NPCs
     {
         public Dandelion()
         {
-            overwriteSpiecesData();
             localisation = IFieldNavigation.GetRandomPlace();
             if (localisation == new Point(-1, -1)) { noLegalPlaceFromRandomMSG(); }
             else
@@ -22,7 +21,6 @@ namespace SimulationGame.NPCs
         }
         protected Dandelion(Point destination)
         {
-            overwriteSpiecesData();
             localisation = destination;
             callIInitiationHandler();
         }

@@ -13,12 +13,10 @@ namespace SimulationGame.NPCs
         protected Inhabitant()
         {
             overwriteSpiecesData();
-            localisation = IFieldNavigation.GetRandomPlace();
         }
         protected Inhabitant(Point destination)
         {
             overwriteSpiecesData();
-            localisation = destination;
         }
         protected virtual void overwriteSpiecesData()
         {
