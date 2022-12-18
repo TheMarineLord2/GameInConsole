@@ -52,19 +52,18 @@ namespace SimulationGame.Interfaces
             int row = rand / World.GetInstance().GetVolume();
             int collumn = rand % World.GetInstance().GetVolume();
 
-            if (World.GetInstance().GetField(new(row, collumn)).Inhabitant == null) return new(row, collumn);
-            //go through all possibilities, by collumn, then by row
-            else for (int i = 0; i < World.GetInstance().GetVolume(); i++)
+            //go through all possibilities, starting from random point
+            for (int i = 0; i < World.GetInstance().GetVolume(); i++)
+            {
+                //changing row value once for all
+                if (i + row >= World.GetInstance().GetVolume()) { row -= World.GetInstance().GetVolume(); }
+                for (int j = 0; j < World.GetInstance().GetVolume(); j++)
                 {
-                    //changing row value once for all
-                    if (i + row >= World.GetInstance().GetVolume()) { row -= World.GetInstance().GetVolume(); }
-                    for (int j = 0; j < World.GetInstance().GetVolume(); j++)
-                    {
-                        //changing collumn value once for all
-                        if (j + collumn >= World.GetInstance().GetVolume()) { collumn -= World.GetInstance().GetVolume(); }
-                        if (World.GetInstance().GetField(new(row + i, collumn + j)).Inhabitant == null) return new(row, collumn);
-                    }
+                    //changing collumn value once for all
+                    if (j + collumn >= World.GetInstance().GetVolume()) { collumn -= World.GetInstance().GetVolume(); }
+                    if (World.GetInstance().GetField(new(row + i, collumn + j)).Inhabitant == null) return new(row +i, collumn +j);
                 }
+            }
             Console.WriteLine("IFieldNavigation: No free space is aviable to find GetRandomPlace from \n" +
                 "Returning illegal place.\n");
             return new(-1, -1);
