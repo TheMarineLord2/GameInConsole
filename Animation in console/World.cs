@@ -11,10 +11,15 @@ using SimulationGame.Interfaces;
 
 namespace SimulationGame
 {
-
+    enum OrganismTypes      //ByInitiative
+    {
+        Unknown = 0,
+        Dandelion,
+        Sheep,
+    }
     struct Field
     {
-        public Field(Inhabitant inhabitant)
+        public Field(Entity inhabitant)
         {
             Inhabitant = inhabitant;
             Localisation = inhabitant.GetLocalisation();
@@ -25,12 +30,7 @@ namespace SimulationGame
             Localisation = localisation;
         }
         public Point Localisation;
-        public Inhabitant? Inhabitant;
-    }
-    enum OrganismTypes      //ByInitiative
-    {
-        Unknown = 0,
-        Dandelion,
+        public Entity? Inhabitant;
     }
     internal class World : IInitiationHandler        //singleton
     {
@@ -39,7 +39,7 @@ namespace SimulationGame
         //w formie pyłku
         private World() { }
         private static World? inst = null;
-        private List<Inhabitant> inhabitants = new();
+        private List<Entity> entities = new();
         //world propeties:
         private const int volume = 5;
         private const string emptyFieldRepresentation = "   ";
@@ -62,14 +62,14 @@ namespace SimulationGame
         public int GetNumberOfFreeSpaces()
         {
             int freeSpaces = volume * volume;
-            return freeSpaces - inst.inhabitants.Count();
+            return freeSpaces - inst.entities.Count();
         }
         public Field GetField(Point localisation)
         {
-            if (inhabitants.Count() == 0) return new Field(localisation);
+            if (entities.Count() == 0) return new Field(localisation);
             else
             {
-                Inhabitant[] arr = inhabitants.ToArray();
+                Entity[] arr = entities.ToArray();
                 for (int i = 0; i < arr.Length; i++)
                 {
                     if (arr[i].GetX() == localisation.X && arr[i].GetY() == localisation.Y) return new Field(arr[i]);
@@ -77,52 +77,40 @@ namespace SimulationGame
             }
             return new Field(localisation);
         }
-        public void AddInhabitant(Inhabitant inhabitant)
+        public void AddEntity(Organism organism)
         {
-            inhabitants.Add(inhabitant);
-            //sort by initiative
+            entities.Add(organism);
+            // add -> sort by initiative
         }
         public void Reset(bool safety = false)
         {
             if (safety)
             {
-                inhabitants = new();
+                entities = new();
             }
         }
         //-------------------private---------------------
         private void print()
         {
             Console.Clear();
-            List<Inhabitant> inhabQueue = getInhabPrintQueue();
-            foreach (Inhabitant dand in inhabQueue)
-            {
-                Console.WriteLine(dand.GetSpieces() + ":   x:" + dand.GetX() + ",   y:" + dand.GetY() + "\n");
-            }
-            int numbOfInhabPrinted = 0;
+            List<Entity> entityQueue = getEntitiesPrintQueue();
+            int numbOfEntitiesPrinted = 0;
             for (int y = 0; y < volume; y++)
             {
                 for (int x = 0; x < volume; x++)
                 {
-                    if (inhabQueue.Count == numbOfInhabPrinted)
+                    if (entityQueue.Count == numbOfEntitiesPrinted)
                     {
                         printEmptyField();
                     }
-                    else if (inhabQueue[numbOfInhabPrinted].GetY() == y && inhabQueue[numbOfInhabPrinted].GetX() == x)
+                    else if (entityQueue[numbOfEntitiesPrinted].GetY() == y && entityQueue[numbOfEntitiesPrinted].GetX() == x)
                     {
-                        printInhabRepresentation(inhabQueue[numbOfInhabPrinted]);
+                        printEntityRepresentation(entityQueue[numbOfEntitiesPrinted]);
                         printGapBetweenFields();
-                        numbOfInhabPrinted++;
+                        numbOfEntitiesPrinted++;
                     }
                     else { printEmptyField(); }
                 }
-
-                /*
-                foreach (Inhabitant dand in inhabQueue)
-                {
-                    System.Console.WriteLine(dand.GetSpieces() + ": " + dand.GetX() + ", " + dand.GetY() + "\n");
-                }
-                */
-
                 Console.BackgroundColor = backgroundColor;
                 Console.WriteLine("\n");
             }
@@ -138,31 +126,31 @@ namespace SimulationGame
             Console.BackgroundColor = backgroundColor;
             Console.Write(gapBetweenFields);
         }
-        private void printInhabRepresentation(Inhabitant inhabitant)
+        private void printEntityRepresentation(Entity entity)
         {
-            inhabitant.Print();
+            entity.Print();
             Console.Write(" ");
         }
-        private List<Inhabitant> getInhabPrintQueue()
+        private List<Entity> getEntitiesPrintQueue()
         {
-            List<Inhabitant> resultQ = new List<Inhabitant>(inhabitants);
-            resultQ.Sort(CompareInhabByX);
-            resultQ.Sort(CompareInhabByY);
+            List<Entity> resultQ = new List<Entity>(entities);
+            resultQ.Sort(CompareEntitiesByX);
+            resultQ.Sort(CompareEntitiesByY);
             return resultQ;
         }
 
         private void callActions()
         {
-            foreach (Inhabitant inhabitant in inhabitants)
+            foreach (Organism organism in entities)
             {
-                inhabitant.Action();
+                organism.Action();
             }
         }
-        private static int CompareInhabByX(Inhabitant x, Inhabitant y)
+        private static int CompareEntitiesByX(Entity x, Entity y)
         {
             return x.GetX() - y.GetX();
         }
-        private static int CompareInhabByY(Inhabitant x, Inhabitant y)
+        private static int CompareEntitiesByY(Entity x, Entity y)
         {
             return x.GetY() - y.GetY();
         }

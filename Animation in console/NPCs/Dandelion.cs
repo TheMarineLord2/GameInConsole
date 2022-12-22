@@ -13,33 +13,25 @@ namespace SimulationGame.NPCs
         public Dandelion()
         {
             localisation = IFieldNavigation.GetRandomPlace();
-            if (localisation == new Point(-1, -1)) { noLegalPlaceFromRandomMSG(); }
+            if (localisation == new Point(-1, -1)) { NoLegalPlaceFromRandomMSG(); }
             else
             {
-                callIInitiationHandler();
+                CallIInitiationHandler();
             }
         }
         protected Dandelion(Point destination)
         {
             localisation = destination;
-            callIInitiationHandler();
+            CallIInitiationHandler();
         }
         protected override void overwriteSpiecesData()
         {
             visualRepr = " * ";
-            str = 0;
+            strength = 0;
             spieces = OrganismTypes.Dandelion;
             isAlive = true;
             home = World.GetInstance();
         }
         //----------------------------
-        public override void Action()
-        {
-        }
-        //----------------------------
-        override protected void callIInitiationHandler()
-        {
-            IInitiationHandler.PlaceInWorld(this);
-        }
     }
 }

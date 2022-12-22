@@ -8,27 +8,14 @@ using SimulationGame.Interfaces;
 
 namespace SimulationGame.NPCs
 {
-    internal abstract class Inhabitant
+    internal abstract class Entity
     {
-        protected Inhabitant()
+        protected Entity()
         {
-            overwriteSpiecesData();
-        }
-        protected Inhabitant(Point destination)
-        {
-            overwriteSpiecesData();
-        }
-        protected virtual void overwriteSpiecesData()
-        {
-            visualRepr = "_";
-            str = 0;
-            spieces = 0;
-            isAlive = false;
-            home = World.GetInstance();
         }
         protected Point localisation;
         protected string visualRepr;
-        protected int str;
+        protected int strength;
         protected OrganismTypes spieces;
         protected bool isAlive;
         protected World home;
@@ -37,15 +24,14 @@ namespace SimulationGame.NPCs
         public int GetY() { return localisation.Y; }
         public Point GetLocalisation() { return localisation; }
         public OrganismTypes GetSpieces() { return spieces; }
-        public int GetStr() { return str; }
+        public int GetStrength() { return strength; }
         public void Print() { Console.Write(visualRepr); }
-        public abstract void Action();
         //-----------------------------
-        protected virtual void callIInitiationHandler()
+        protected void CallIInitiationHandler()
         {
             IInitiationHandler.PlaceInWorld(this);
         }
-        protected Point tryGettingRandomPlace()
+        protected Point TryGettingRandomPlace()
         {
             if (IFieldNavigation.GetNumberOfFreeSpaces() == 0)
             {
@@ -55,6 +41,8 @@ namespace SimulationGame.NPCs
             }
             else return IFieldNavigation.GetRandomPlace();
         }
-        protected void noLegalPlaceFromRandomMSG() { Console.WriteLine(spieces + ": Not calling initiation handler. No legal place was returned from random \n"); }
+        protected void NoLegalPlaceFromRandomMSG() {
+            Console.WriteLine(spieces + ": Not calling initiation handler. No legal place was returned from random \n");
+        }
     }
 }

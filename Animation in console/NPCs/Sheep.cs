@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimulationGame.NPCs
 {
-    internal abstract class Animal : Organism
+    internal class Sheep:Animal
     {
     }
 }
