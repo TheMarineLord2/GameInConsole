@@ -7,7 +7,7 @@ using SimulationGame.NPCs;
 
 namespace SimulationGame.Interfaces
 {
-    internal class IInitiationHandler    //works as Visitor
+    internal interface IInitiationHandler    //works as Visitor
     {
         static public void PlaceInWorld(Entity entity)
         {
