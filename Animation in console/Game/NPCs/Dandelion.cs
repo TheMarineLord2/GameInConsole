@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SimulationGame.Interfaces;
+using SimulationGame.Game.Interfaces;
 
-namespace SimulationGame.NPCs
+namespace SimulationGame.Game.NPCs
 {
     internal class Dandelion : Plant
     {

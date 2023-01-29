@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using SimulationGame;
-
+using System.Text.RegularExpressions;
+using SimulationGame.Game.Shell;
 Console.WriteLine("Hello, World!");
-World mainW = World.GetInstance();
+Shell.InitiateShell();
