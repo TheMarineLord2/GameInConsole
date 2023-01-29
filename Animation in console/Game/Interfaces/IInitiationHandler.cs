@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SimulationGame.NPCs;
+using SimulationGame.Game.NPCs;
 
-namespace SimulationGame.Interfaces
+namespace SimulationGame.Game.Interfaces
 {
     internal class IInitiationHandler    //works as Visitor
     {

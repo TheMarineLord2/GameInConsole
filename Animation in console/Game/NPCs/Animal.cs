@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimulationGame.NPCs
+namespace SimulationGame.Game.NPCs
 {
     internal abstract class Animal : Inhabitant
     {

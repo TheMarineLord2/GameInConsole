@@ -1,0 +1,4 @@
+﻿enum Commands
+{
+    NextTurn = "";
+}

@@ -6,8 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using SimulationGame.NPCs;
-using SimulationGame.Interfaces;
+using SimulationGame.Game.Interfaces;
+using SimulationGame.Game.NPCs;
 
 namespace SimulationGame
 {
@@ -34,20 +34,20 @@ namespace SimulationGame
     }
     internal class World : IInitiationHandler        //singleton
     {
-        //po zadeklarowaniu odpowiedniej ilości
-        //pochodnych LifeForm, zaimplementuj je
-        //w formie pyłku
+        // po zadeklarowaniu odpowiedniej ilości
+        // pochodnych LifeForm, zaimplementuj je
+        // w formie pyłku
         private World() { }
         private static World? inst = null;
         private List<Inhabitant> inhabitants = new();
-        //world propeties:
+        // world propeties:
         private const int volume = 5;
         private const string emptyFieldRepresentation = "   ";
         private const string gapBetweenFields = "\t";
         private const ConsoleColor backgroundColor = ConsoleColor.Black;
         private const ConsoleColor fieldColor = ConsoleColor.DarkGray;
         private const ConsoleColor pencilColor = ConsoleColor.Gray;
-        //------------------public---------------------
+        // ------------------ public ---------------------
         static public World GetInstance()
         {
             if (inst == null) { inst = new World(); }
@@ -79,8 +79,8 @@ namespace SimulationGame
         }
         public void AddInhabitant(Inhabitant inhabitant)
         {
+            // sort by initiative
             inhabitants.Add(inhabitant);
-            //sort by initiative
         }
         public void Reset(bool safety = false)
         {
@@ -89,7 +89,7 @@ namespace SimulationGame
                 inhabitants = new();
             }
         }
-        //-------------------private---------------------
+        // ------------------- private ---------------------
         private void print()
         {
             Console.Clear();

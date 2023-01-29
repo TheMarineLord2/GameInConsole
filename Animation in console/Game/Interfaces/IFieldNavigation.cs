@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimulationGame.Interfaces
+namespace SimulationGame.Game.Interfaces
 {
     internal interface IFieldNavigation
     {
