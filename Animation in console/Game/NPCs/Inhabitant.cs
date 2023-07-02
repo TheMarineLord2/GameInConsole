@@ -8,55 +8,45 @@ using SimulationGame.Game.Interfaces;
 
 namespace SimulationGame.Game.NPCs
 {
-    internal abstract class Inhabitant
+    internal abstract class Inhabitant : INonPlayerCharacter
     {
         protected Inhabitant()
         {
-            overwriteSpiecesData();
-            localisation = IFieldNavigation.GetRandomPlace();
+            home = World.GetInstance();
+            overrideSpiecesData();
+            localisation = ObjectStatusMovementsInteractions.GetRandomPlace();
         }
         protected Inhabitant(Point destination)
         {
-            overwriteSpiecesData();
-            localisation = destination;
-        }
-        protected virtual void overwriteSpiecesData()
-        {
-            visualRepr = "_";
-            str = 0;
-            spieces = 0;
-            isAlive = false;
             home = World.GetInstance();
+            overrideSpiecesData();
+            localisation = destination;
         }
         protected Point localisation;
         protected string visualRepr;
-        protected int str;
-        protected OrganismTypes spieces;
+        protected int strength;
+        protected int initiative;
+        protected Inhabitant? myType;
         protected bool isAlive;
         protected World home;
-        //-----------------------------
-        public int GetX() { return localisation.X; }
-        public int GetY() { return localisation.Y; }
+        //-----------------------------     implemented in interface
         public Point GetLocalisation() { return localisation; }
-        public OrganismTypes GetSpieces() { return spieces; }
-        public int GetStr() { return str; }
+        public int GetInitiative() { return initiative; }
         public void Print() { Console.Write(visualRepr); }
-        public abstract void Action();
-        //-----------------------------
-        protected virtual void callIInitiationHandler()
+        public virtual void TakeTurn() { }
+        public Inhabitant? getMyType() { return myType; }
+        //-----------------------------     protected methods
+        protected virtual void overrideSpiecesData()
         {
-            IInitiationHandler.PlaceInWorld(this);
+            visualRepr = "_";
+            strength = 0;
+            initiative = 0;
+            isAlive = false;
+            myType = this;
+
         }
-        protected Point tryGettingRandomPlace()
-        {
-            if (IFieldNavigation.GetNumberOfFreeSpaces() == 0)
-            {
-                Console.WriteLine("Inhabitant: No free space is aviable \n" +
-                "Returning illegal place.\n");
-                return new(-1, -1);
-            }
-            else return IFieldNavigation.GetRandomPlace();
-        }
-        protected void noLegalPlaceFromRandomMSG() { Console.WriteLine(spieces + ": Not calling initiation handler. No legal place was returned from random \n"); }
+        protected virtual void Action() { }
+        protected virtual void Reproduce() { }
+
     }
 }

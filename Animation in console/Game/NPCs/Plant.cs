@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimulationGame.Game.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,10 @@ namespace SimulationGame.Game.NPCs
 {
     internal abstract class Plant : Inhabitant
     {
+        override public void TakeTurn()
+        {
+            Console.WriteLine("Taking turn of a plant");
+            Reproduce();
+        }
     }
 }

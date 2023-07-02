@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SimulationGame.Game.Interfaces;
+using SimulationGame.Game;
 
 namespace SimulationGame.Game.NPCs
 {
@@ -12,36 +13,35 @@ namespace SimulationGame.Game.NPCs
     {
         public Dandelion()
         {
-            overwriteSpiecesData();
-            localisation = IFieldNavigation.GetRandomPlace();
-            if (localisation == new Point(-1, -1)) { noLegalPlaceFromRandomMSG(); }
+            overrideSpiecesData();
+            localisation = ObjectStatusMovementsInteractions.GetRandomPlace();
+            if (localisation == new Point(-1, -1)) {}
             else
             {
-                callIInitiationHandler();
+                Dandelion copy= this;
+                ObjectStatusMovementsInteractions.callIInitiationHandler(ref copy) ;
             }
         }
         protected Dandelion(Point destination)
         {
-            overwriteSpiecesData();
+            overrideSpiecesData();
             localisation = destination;
-            callIInitiationHandler();
+            Dandelion copy = this;
+            ObjectStatusMovementsInteractions.callIInitiationHandler(ref copy);
         }
-        protected override void overwriteSpiecesData()
+        protected override void overrideSpiecesData()
         {
             visualRepr = " * ";
-            str = 0;
-            spieces = OrganismTypes.Dandelion;
+            strength = 0;
+            initiative = 2;
             isAlive = true;
-            home = World.GetInstance();
+            myType = this;
         }
-        //----------------------------
-        public override void Action()
+        //---------------------------
+        protected override void Reproduce()
         {
-        }
-        //----------------------------
-        override protected void callIInitiationHandler()
-        {
-            IInitiationHandler.PlaceInWorld(this);
+            if(new Random().Next(4)==0 )
+            new Dandelion();
         }
     }
 }

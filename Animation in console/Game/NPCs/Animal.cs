@@ -8,5 +8,9 @@ namespace SimulationGame.Game.NPCs
 {
     internal abstract class Animal : Inhabitant
     {
+        public override void TakeTurn()
+        {
+            Action();
+        }
     }
 }
