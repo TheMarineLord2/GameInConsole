@@ -9,12 +9,15 @@ using System.Threading.Tasks;
 
 namespace SimulationGame.Game.Interfaces
 {
-    internal interface INonPlayerCharacter
+    internal interface IInhabitant
     {
         Point GetLocalisation();
+        void SetLocalisation(Point localisation);
         int GetInitiative();
         void TakeTurn();
         void Print();
-        Inhabitant? getMyType();
+        public void Die();  //World.Inhabitants World.NewBornBuffor
+        public void MoveBack();
+        public void TakeThisField();
     }
 }

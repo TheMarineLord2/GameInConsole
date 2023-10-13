@@ -11,35 +11,38 @@ using SimulationGame.Game.NPCs;
 
 namespace SimulationGame.Game
 {
-
-    struct Field
+    // created to allow passing information about fields with or withoud inhabitants
+    struct Field    
     {
-        public Field(Inhabitant inhabitant)
+        public Field(IInhabitant inhabitant)
         {
-            Inhabitant = inhabitant;
-            Localisation = inhabitant.GetLocalisation();
+            this.inhabitant = inhabitant;
+            localisation = inhabitant.GetLocalisation();
         }
         public Field(Point localisation)
         {
-            Inhabitant = null;
-            Localisation = localisation;
+            inhabitant = null;
+            this.localisation = localisation;
         }
-        public Point Localisation;
-        public Inhabitant? Inhabitant;
+        public Point localisation;
+        public IInhabitant? inhabitant;
     }
+
     enum OrganismTypes      //ByInitiative
     {
         Unknown = 0,
         Dandelion,
         Sheep,
     }
+
     internal class World
     {
         private World() { }
         private static World? inst = null;
-        private List<INonPlayerCharacter> inhabitants = new();
-        private List<INonPlayerCharacter> newBornList = new();
+        private List<IInhabitant> inhabitantList = new();
+        private List<IInhabitant> newBornInhabitantBuffor = new();
         private int turnNumber = 0;
+
         // world propeties:
         private const int volume = 7;
         private const string emptyFieldRepresentation = "   ";
@@ -47,31 +50,38 @@ namespace SimulationGame.Game
         private const ConsoleColor backgroundColor = ConsoleColor.Black;
         private const ConsoleColor fieldColor = ConsoleColor.DarkGray;
         private const ConsoleColor pencilColor = ConsoleColor.Gray;
+
+
+
         // ------------------ public ---------------------
-        static public World GetInstance()
+        static public World This()
         {
             if (inst == null) { inst = new World(); }
             return inst;
         }
+        
         public int GetVolume() { return volume; }
+        
         public void TakeATurn()
         {
-            sortOutInhabitants();
+            rearangeInhabitantsList();
             turnNumber++;
             print();
             callActions();
         }
+        
         public int GetNumberOfFreeSpaces()
         {
             int freeSpaces = volume * volume;
-            return freeSpaces - inst.inhabitants.Count();
+            return freeSpaces - inst.inhabitantList.Count;
         }
+        
         public Field GetField(Point localisation)
         {
-            if (inhabitants.Count() == 0) return new Field(localisation);
+            if (inhabitantList.Count() == 0) return new Field(localisation);
             else
             {
-                Inhabitant[] arr = inhabitants.ToArray();
+                IInhabitant[] arr = inhabitantList.ToArray();
                 for (int i = 0; i < arr.Length; i++)
                 {
                     if (arr[i].GetLocalisation().X == localisation.X && arr[i].GetLocalisation().Y == localisation.Y) return new Field(arr[i]);
@@ -79,25 +89,29 @@ namespace SimulationGame.Game
             }
             return new Field(localisation);
         }
-        public void AddInhabitant(INonPlayerCharacter mob)
+        
+        public void AddInhabitant(IInhabitant mob)
         {
-            // sort by initiative
-            newBornList.Add(mob);
+            // sort by _initiative
+            newBornInhabitantBuffor.Add(mob);
         }
+        
         public void Reset(bool safety = false)
         {
             if (safety)
             {
-                inhabitants = new();
+                inhabitantList = new();
             }
         }
+
+
         // ------------------- private ---------------------
         private void print()
         {
             Console.Clear();        //clears only current screen
             Console.WriteLine("Turn: " + turnNumber);
-            Console.WriteLine("Number of inhabitants: " + inhabitants.Count());
-            List<Inhabitant> inhabQueue = getInhabPrintQueue();
+            Console.WriteLine("Number of inhabitantList: " + inhabitantList.Count());
+            List<IInhabitant> inhabQueue = getInhabPrintQueue();
             int numbOfInhabPrinted = 0;
             for (int y = 0; y < volume; y++)
             {
@@ -117,7 +131,7 @@ namespace SimulationGame.Game
                 }
 
                 /*
-                foreach (Inhabitant dand in inhabQueue)
+                foreach (inhabitant dand in inhabQueue)
                 {
                     System.Console.WriteLine(dand.GetSpieces() + ": " + dand.GetX() + ", " + dand.GetY() + "\n");
                 }
@@ -127,52 +141,59 @@ namespace SimulationGame.Game
                 Console.WriteLine("\n");
             }
         }
+
         private void printEmptyField()
         {
             Console.BackgroundColor = fieldColor;
             Console.Write(emptyFieldRepresentation);
             printGapBetweenFields();
         }
+        
         private void printGapBetweenFields()
         {
             Console.BackgroundColor = backgroundColor;
             Console.Write(gapBetweenFields);
         }
-        private void printInhabRepresentation(Inhabitant inhabitant)
+        
+        private void printInhabRepresentation(IInhabitant inhabitant)
         {
             inhabitant.Print();
             Console.Write(" ");
         }
-        private List<INonPlayerCharacter> getInhabPrintQueue()
+        
+        private List<IInhabitant> getInhabPrintQueue()
         {
-            List<INonPlayerCharacter> resultQ = new List<INonPlayerCharacter>(inhabitants);
+            List<IInhabitant> resultQ = new List<IInhabitant>(inhabitantList);
             resultQ.Sort(CompareInhabByX);
             resultQ.Sort(CompareInhabByY);
             return resultQ;
         }
-        private void sortOutInhabitants() {
-            foreach(INonPlayerCharacter mob in newBornList)
+        
+        private void rearangeInhabitantsList() {
+            foreach(IInhabitant mob in newBornInhabitantBuffor)
             {
-                inhabitants.Add(mob);
-                Console.WriteLine("Inhabitant " + mob.GetLocalisation() + " added to newBornList");
+                inhabitantList.Add(mob);
+                Console.WriteLine("inhabitant " + mob.GetLocalisation() + " added to newBornInhabitantBuffor");
             }
-            newBornList = new();
-            inhabitants = getInhabPrintQueue();
+            newBornInhabitantBuffor = new();
+            inhabitantList = getInhabPrintQueue();
         }
 
         private void callActions()
         {
-            foreach (Inhabitant inhabitant in inhabitants)
+            foreach (IInhabitant inhabitant in inhabitantList)
             {
                 Console.WriteLine("Taking turn of " + inhabitant.ToString());
                 inhabitant.TakeTurn();
             }
         }
-        private static int CompareInhabByX(INonPlayerCharacter x, INonPlayerCharacter y)
+        
+        private static int CompareInhabByX(IInhabitant x, IInhabitant y)
         {
             return x.GetLocalisation().X - y.GetLocalisation().X;
         }
-        private static int CompareInhabByY(INonPlayerCharacter x, INonPlayerCharacter y)
+        
+        private static int CompareInhabByY(IInhabitant x, IInhabitant y)
         {
             return x.GetLocalisation().Y - y.GetLocalisation().Y;
         }

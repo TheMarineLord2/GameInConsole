@@ -4,7 +4,7 @@ using SimulationGame.Game;
 using SimulationGame.Game.NPCs;
 
 Console.WriteLine("Hello, World!");
-World world = World.GetInstance();
+World world = World.This();
 new Dandelion();
 new Dandelion();
 string ifTerminateGame = "1";

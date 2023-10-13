@@ -4,49 +4,78 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SimulationGame.Game.Handlers;
 using SimulationGame.Game.Interfaces;
 
 namespace SimulationGame.Game.NPCs
 {
-    internal abstract class Inhabitant : INonPlayerCharacter
+    internal abstract class Inhabitant : IInhabitant
     {
         protected Inhabitant()
         {
-            home = World.GetInstance();
+            _home = World.This();
             overrideSpiecesData();
-            localisation = ObjectStatusMovementsInteractions.GetRandomPlace();
+            _localisation = InhabitantMovementHandler.GetAnyRandomPlace();
         }
         protected Inhabitant(Point destination)
         {
-            home = World.GetInstance();
+            _home = World.This();
             overrideSpiecesData();
-            localisation = destination;
+            _localisation = destination;
         }
-        protected Point localisation;
-        protected string visualRepr;
-        protected int strength;
-        protected int initiative;
-        protected Inhabitant? myType;
-        protected bool isAlive;
-        protected World home;
-        //-----------------------------     implemented in interface
-        public Point GetLocalisation() { return localisation; }
-        public int GetInitiative() { return initiative; }
-        public void Print() { Console.Write(visualRepr); }
+
+        // fields
+        protected Point _localisation;
+        protected string _visualRepr;
+        protected int _strength;
+        protected int _initiative;
+        protected Inhabitant? _myType;
+        protected bool _isAlive;
+        protected World _home;
+
+        // ------     implemented in interface
+        public Point GetLocalisation() { return _localisation; }
+        public int GetInitiative() { return _initiative; }
+        public void Print() { Console.Write(_visualRepr); }
         public virtual void TakeTurn() { }
-        public Inhabitant? getMyType() { return myType; }
-        //-----------------------------     protected methods
+        public Inhabitant? getMyType() { return _myType; }
+
+        // ------    protected methods
         protected virtual void overrideSpiecesData()
         {
-            visualRepr = "_";
-            strength = 0;
-            initiative = 0;
-            isAlive = false;
-            myType = this;
+            _visualRepr = "_";
+            _strength = 0;
+            _initiative = 0;
+            _isAlive = false;
+            _myType = this;
 
         }
         protected virtual void Action() { }
         protected virtual void Reproduce() { }
 
+        public void Die()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Escape()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TakeThisField()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MoveBack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLocalisation(Point localisation)
+        {
+            _localisation = localisation;
+        }
     }
 }

@@ -10,10 +10,10 @@ namespace SimulationGame.Game.NPCs
     {
         protected override void overrideSpiecesData()
         {
-            visualRepr = " $ ";
-            strength = 2;
-            isAlive = true;
-            myType = this;
+            _visualRepr = " $ ";
+            _strength = 2;
+            _isAlive = true;
+            _myType = this;
         }
     }
 }
