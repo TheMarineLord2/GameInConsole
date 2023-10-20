@@ -11,6 +11,9 @@ namespace SimulationGame.Game.NPCs
 {
     internal class Dandelion : Plant
     {
+        // Plant, that wildly spreads.
+        // no significant actions or interactions with other dandelions.
+        // Simple weed
         public Dandelion()
         {
             overrideSpiecesData();
@@ -37,7 +40,7 @@ namespace SimulationGame.Game.NPCs
             _isAlive = true;
             _myType = this;
         }
-        //---------------------------
+        // ---------------------------
         protected override void Reproduce()
         {
             if(new Random().Next(4)==0 )

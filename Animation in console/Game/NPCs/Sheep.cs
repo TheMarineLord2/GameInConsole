@@ -8,6 +8,9 @@ namespace SimulationGame.Game.NPCs
 {
     internal class Sheep : Animal
     {
+        // Simple animal.
+        // Tends to eat plants.
+        // If not, then move back. Do not attack animals.
         protected override void overrideSpiecesData()
         {
             _visualRepr = " $ ";

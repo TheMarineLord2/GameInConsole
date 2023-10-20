@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace SimulationGame.Game.Interfaces
 {
+    internal struct CombatStats
+    {
+        public int strengt;
+    }
     internal interface IInhabitant
     {
         Point GetLocalisation();
@@ -19,5 +23,6 @@ namespace SimulationGame.Game.Interfaces
         public void Die();  //World.Inhabitants World.NewBornBuffor
         public void MoveBack();
         public void TakeThisField();
+        public CombatStats GetCombatStats();
     }
 }

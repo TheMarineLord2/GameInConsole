@@ -50,11 +50,14 @@ namespace SimulationGame.Game.NPCs
             _myType = this;
 
         }
-        protected virtual void Action() { }
+        protected virtual void Action() {   /* do notning yet */}
         protected virtual void Reproduce() { }
 
         public void Die()
         {
+            // change status of object.
+            // remove from World
+            // let the C# deconstruct it
             throw new NotImplementedException();
         }
 
@@ -76,6 +79,10 @@ namespace SimulationGame.Game.NPCs
         public void SetLocalisation(Point localisation)
         {
             _localisation = localisation;
+        }
+        public CombatStats GetCombatStats()
+        {
+            throw new NotImplementedException();
         }
     }
 }
