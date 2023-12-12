@@ -53,6 +53,7 @@ namespace SimulationGame.Game.NPCs
         protected virtual void Action() {   /* do notning yet */}
         protected virtual void Reproduce() { }
 
+        // ------   implemented in IInhabitant
         public void Die()
         {
             // change status of object.
@@ -80,9 +81,48 @@ namespace SimulationGame.Game.NPCs
         {
             _localisation = localisation;
         }
-        public CombatStats GetCombatStats()
+        public BattleResults Attack<T> (T defender) where T : IInhabitant
         {
-            throw new NotImplementedException();
+            int enemyStrength = defender.GetStrength();
+            if (enemyStrength > _strength) { return BattleResults.LOSS; }
+            else if(enemyStrength < _strength) { return BattleResults.WIN; }
+            else { return BattleResults.DRAW; }
+        }
+
+        public int GetStrength()
+        {
+            return _strength;
+        }
+        public void Move<T>(ref T mob, Field destination) where T : IInhabitant
+        {
+            if (destination.inhabitant == null) { this.SetLocalisation(destination.localisation); }
+            else
+            {
+                BattleResults i = this.Attack(destination.inhabitant);
+                switch (i)
+                {
+                    case BattleResults.LOSS:
+                        {
+                            this.MoveBack();
+                            break;
+                        }
+                    case BattleResults.WIN:
+                        {
+                            destination.inhabitant.Die();
+                            this.SetLocalisation(destination.localisation);
+                            break;
+                        }
+                    case BattleResults.DRAW:
+                        {
+                            this.MoveBack();
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
         }
     }
 }

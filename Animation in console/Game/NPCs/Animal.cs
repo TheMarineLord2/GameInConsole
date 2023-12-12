@@ -9,6 +9,8 @@ namespace SimulationGame.Game.NPCs
 {
     internal abstract class Animal : Inhabitant
     {
+        int _movementRange = 1;
+        protected virtual void Action() {   /* do notning yet */}
         public override void TakeTurn()
         {
             Action();
@@ -26,7 +28,7 @@ namespace SimulationGame.Game.NPCs
         }
         protected void moveRandomly()
         {
-            Field targetDestination = pickDestination(lookAround(1));
+            Field targetDestination = pickDestination(lookAround(_movementRange));
             // InhabitantMovementHandler.Move(this, Field)
         }
     }

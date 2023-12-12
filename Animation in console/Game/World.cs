@@ -64,7 +64,7 @@ namespace SimulationGame.Game
         
         public void TakeATurn()
         {
-            rearangeInhabitantsList();
+            rearrangeInhabitantList();
             turnNumber++;
             print();
             callActions();
@@ -108,6 +108,7 @@ namespace SimulationGame.Game
         // ------------------- private ---------------------
         private void print()
         {
+            // instead of clearing screen every time, try to just say where on the screen it should be displayed
             Console.Clear();        //clears only current screen
             Console.WriteLine("Turn: " + turnNumber);
             Console.WriteLine("Number of inhabitantList: " + inhabitantList.Count());
@@ -169,7 +170,7 @@ namespace SimulationGame.Game
             return resultQ;
         }
         
-        private void rearangeInhabitantsList() {
+        private void rearrangeInhabitantList() {
             foreach(IInhabitant mob in newBornInhabitantBuffor)
             {
                 inhabitantList.Add(mob);

@@ -9,6 +9,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
+// why everything in this handler is not in Inhabitant class?
+// shouldnt it be another interface?
+
 namespace SimulationGame.Game.Handlers
 {
     internal class InhabitantMovementHandler
@@ -80,14 +83,6 @@ namespace SimulationGame.Game.Handlers
         {
             if (questioned.X >= 0 && questioned.X < World.This().GetVolume() && 0 <= questioned.Y && questioned.Y < World.This().GetVolume()) { return true; }
             return false;
-        }
-
-        static void Move<T>(ref T mob, Field destination) where T:IInhabitant {
-            if(destination.inhabitant == null) { mob.SetLocalisation(destination.localisation); }
-            else
-            {
-                InhabitantInteractionHandler.Interact(mob, destination.inhabitant);
-            }
         }
     }
 }
