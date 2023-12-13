@@ -18,15 +18,10 @@ namespace SimulationGame.Game.Interfaces
     internal interface IInhabitant
     {
         Point GetLocalisation();
-        void SetLocalisation(Point localisation);
+        protected void SetLocalisation(Point localisation);
         int GetInitiative();
         int GetStrength();
         void TakeTurn();
         void Print();
-        public void Die();  //World.Inhabitants World.NewBornBuffor
-        public void MoveBack();
-        public void TakeThisField();
-        public BattleResults Attack<T>(T inhabitant) where T : IInhabitant;
-        public void Move<T>(ref T mob, Field destination) where T : IInhabitant;
     }
 }
