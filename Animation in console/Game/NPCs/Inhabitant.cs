@@ -59,7 +59,6 @@ namespace SimulationGame.Game.NPCs
         }
 
         // ------    protected methods
-
         protected virtual void overrideSpiecesData()
         {
             _visualRepr = "_";
@@ -72,7 +71,8 @@ namespace SimulationGame.Game.NPCs
         
         protected virtual void Reproduce() { }
 
-        protected Field pickDestination(List<Field> options)
+        // ------   implemented in IInhabitant
+        public void Die()
         {
             int fieldNumber = new Random().Next(0, options.Count);
             return options[fieldNumber];
@@ -81,11 +81,17 @@ namespace SimulationGame.Game.NPCs
         // ------   should be kept protected
         protected void Move(Field destination)
         {
-            if (destination.inhabitant == null) { this.SetLocalisation(destination.localisation); }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
+        }
+
+        public void TakeThisField()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MoveBack()
+        {
+            throw new NotImplementedException();
         }
 
         protected void SetLocalisation(Point localisation)
