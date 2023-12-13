@@ -49,9 +49,17 @@ namespace SimulationGame.Game.NPCs
         public virtual void TakeTurn() { }
         
         public Inhabitant? getMyType() { return _myType; }
+        public void Die()
+        {
+            // change status of object.
+            // remove from World
+            // let the C# deconstruct it
+            Field myField = _home.GetField(_localisation);
+            myField.inhabitant = null;
+        }
 
         // ------    protected methods
-        
+
         protected virtual void overrideSpiecesData()
         {
             _visualRepr = "_";
@@ -78,15 +86,6 @@ namespace SimulationGame.Game.NPCs
             {
                 throw new NotImplementedException();
             }
-        }
-
-        protected void Die()
-        {
-            // change status of object.
-            // remove from World
-            // let the C# deconstruct it
-            Field myField = _home.GetField(_localisation);
-            myField.inhabitant = null;
         }
 
         protected void SetLocalisation(Point localisation)
