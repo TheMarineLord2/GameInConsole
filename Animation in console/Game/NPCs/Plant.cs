@@ -9,7 +9,7 @@ namespace SimulationGame.Game.NPCs
 {
     internal abstract class Plant : Inhabitant
     {
-        protected virtual void Action() 
+        protected virtual void Act() 
         { 
             Reproduce();
         }
@@ -17,7 +17,7 @@ namespace SimulationGame.Game.NPCs
         override public void TakeTurn()
         {
             Console.WriteLine("Taking turn of a plant");
-            Action();
+            Act();
         }
     }
 }

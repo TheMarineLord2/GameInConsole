@@ -10,26 +10,44 @@ namespace SimulationGame.Game.NPCs
     internal abstract class Animal : Inhabitant
     {
         int _movementRange = 1;
-        protected virtual void Action() {   /* do notning yet */}
+        protected virtual void Act() 
+        {
+            Field destination = pickDestination(lookAround(_movementRange));
+
+            if (destination.inhabitant == null) { Move(destination); }
+            else 
+            {
+                // attack and decide what to do
+                switch (GetBattleResults(destination.inhabitant))
+                {
+                    case Interfaces.BattleResults.WIN:
+                        {
+                            destination.inhabitant.Die();
+                            Move(destination);
+                            break;
+                        }
+                    case Interfaces.BattleResults.LOSS:
+                        {
+                            this.Die();
+                            break;
+                        }
+                        case Interfaces.BattleResults.DRAW:
+                        {
+                            // be passive
+                            break;
+                        }
+
+                } 
+            }
+        }
         public override void TakeTurn()
         {
-            Action();
+            Act();
         }
         // --- protected methods
         protected List<Field> lookAround(int range)
         {
             return InhabitantMovementHandler.GetArrayOfViableDestinations(_localisation, range);
-        }
-
-        protected virtual Field pickDestination(List<Field> options)
-        {
-            int fieldNumber = new Random().Next(0, options.Count);
-            return options[fieldNumber];
-        }
-        protected void moveRandomly()
-        {
-            Field targetDestination = pickDestination(lookAround(_movementRange));
-            // InhabitantMovementHandler.Move(this, Field)
         }
     }
 }

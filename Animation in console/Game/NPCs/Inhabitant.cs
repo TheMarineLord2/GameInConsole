@@ -17,6 +17,7 @@ namespace SimulationGame.Game.NPCs
             overrideSpiecesData();
             _localisation = InhabitantMovementHandler.GetAnyRandomPlace();
         }
+        
         protected Inhabitant(Point destination)
         {
             _home = World.This();
@@ -33,14 +34,24 @@ namespace SimulationGame.Game.NPCs
         protected bool _isAlive;
         protected World _home;
 
-        // ------     implemented in interface
+        // ------     should be avaiable to everyone
         public Point GetLocalisation() { return _localisation; }
+        
+        public int GetStrength()
+        {
+            return _strength;
+        }
+
         public int GetInitiative() { return _initiative; }
+        
         public void Print() { Console.Write(_visualRepr); }
+        
         public virtual void TakeTurn() { }
+        
         public Inhabitant? getMyType() { return _myType; }
 
         // ------    protected methods
+        
         protected virtual void overrideSpiecesData()
         {
             _visualRepr = "_";
@@ -50,79 +61,45 @@ namespace SimulationGame.Game.NPCs
             _myType = this;
 
         }
-        protected virtual void Action() {   /* do notning yet */}
+        
         protected virtual void Reproduce() { }
 
-        // ------   implemented in IInhabitant
-        public void Die()
+        protected virtual Field pickDestination(List<Field> options)
+        {
+            int fieldNumber = new Random().Next(0, options.Count);
+            return options[fieldNumber];
+        }
+
+        // ------   should be kept protected
+        protected void Move(Field destination)
+        {
+            if (destination.inhabitant == null) { this.SetLocalisation(destination.localisation); }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        protected void Die()
         {
             // change status of object.
             // remove from World
             // let the C# deconstruct it
-            throw new NotImplementedException();
+            Field myField = _home.GetField(_localisation);
+            myField.inhabitant = null;
         }
 
-        public void Escape()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void TakeThisField()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MoveBack()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetLocalisation(Point localisation)
+        protected void SetLocalisation(Point localisation)
         {
             _localisation = localisation;
         }
-        public BattleResults Attack<T> (T defender) where T : IInhabitant
+
+        protected BattleResults GetBattleResults<T> (T defender) where T : IInhabitant
         {
             int enemyStrength = defender.GetStrength();
             if (enemyStrength > _strength) { return BattleResults.LOSS; }
             else if(enemyStrength < _strength) { return BattleResults.WIN; }
             else { return BattleResults.DRAW; }
-        }
-
-        public int GetStrength()
-        {
-            return _strength;
-        }
-        public void Move<T>(ref T mob, Field destination) where T : IInhabitant
-        {
-            if (destination.inhabitant == null) { this.SetLocalisation(destination.localisation); }
-            else
-            {
-                BattleResults i = this.Attack(destination.inhabitant);
-                switch (i)
-                {
-                    case BattleResults.LOSS:
-                        {
-                            this.MoveBack();
-                            break;
-                        }
-                    case BattleResults.WIN:
-                        {
-                            destination.inhabitant.Die();
-                            this.SetLocalisation(destination.localisation);
-                            break;
-                        }
-                    case BattleResults.DRAW:
-                        {
-                            this.MoveBack();
-                            break;
-                        }
-                    default:
-                        {
-                            break;
-                        }
-                }
-            }
         }
     }
 }
