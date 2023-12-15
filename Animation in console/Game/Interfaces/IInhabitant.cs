@@ -18,7 +18,7 @@ namespace SimulationGame.Game.Interfaces
     internal interface IInhabitant
     {
         Point GetLocalisation();
-        void SetLocalisation(Point localisation);
+        void Die();
         int GetInitiative();
         int GetStrength();
         void TakeTurn();

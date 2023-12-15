@@ -41,7 +41,7 @@ namespace SimulationGame.Game.NPCs
             _myType = this;
         }
         // ---------------------------
-        protected override void Reproduce()
+        protected override void reproduce()
         {
             if(new Random().Next(4)==0 )
             new Dandelion();

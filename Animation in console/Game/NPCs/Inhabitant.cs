@@ -48,7 +48,7 @@ namespace SimulationGame.Game.NPCs
         
         public virtual void TakeTurn() { }
         
-        public Inhabitant? getMyType() { return _myType; }
+        public Inhabitant? GetMyType() { return _myType; }
         public void Die()
         {
             // change status of object.
@@ -69,37 +69,24 @@ namespace SimulationGame.Game.NPCs
 
         }
         
-        protected virtual void Reproduce() { }
-
-        // ------   implemented in IInhabitant
-        public void Die()
-        {
-            int fieldNumber = new Random().Next(0, options.Count);
-            return options[fieldNumber];
-        }
+        protected virtual void reproduce() { }
 
         // ------   should be kept protected
-        protected void Move(Field destination)
+        protected void move(Field destination)
         {
             throw new NotImplementedException();
         }
 
-        public void TakeThisField()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MoveBack()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected void SetLocalisation(Point localisation)
+        protected void setLocalisation(Point localisation)
         {
             _localisation = localisation;
         }
-
-        protected BattleResults GetBattleResults<T> (T defender) where T : IInhabitant
+        protected Field pickDestination(List<Field> fields)
+        {
+            int rng = new Random().Next(0,fields.Count());
+            return fields[rng];
+        }
+        protected BattleResults getBattleResults<T> (T defender) where T : IInhabitant
         {
             int enemyStrength = defender.GetStrength();
             if (enemyStrength > _strength) { return BattleResults.LOSS; }

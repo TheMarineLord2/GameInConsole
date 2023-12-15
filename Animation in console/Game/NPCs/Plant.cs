@@ -11,7 +11,7 @@ namespace SimulationGame.Game.NPCs
     {
         protected virtual void Act() 
         { 
-            Reproduce();
+            reproduce();
         }
 
         override public void TakeTurn()

@@ -14,16 +14,16 @@ namespace SimulationGame.Game.NPCs
         {
             Field destination = pickDestination(lookAround(_movementRange));
 
-            if (destination.inhabitant == null) { Move(destination); }
+            if (destination.inhabitant == null) { move(destination); }
             else 
             {
                 // attack and decide what to do
-                switch (GetBattleResults(destination.inhabitant))
+                switch (getBattleResults(destination.inhabitant))
                 {
                     case Interfaces.BattleResults.WIN:
                         {
                             destination.inhabitant.Die();
-                            Move(destination);
+                            move(destination);
                             break;
                         }
                     case Interfaces.BattleResults.LOSS:
