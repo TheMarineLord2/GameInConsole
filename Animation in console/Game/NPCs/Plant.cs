@@ -16,7 +16,6 @@ namespace SimulationGame.Game.NPCs
 
         override public void TakeTurn()
         {
-            Console.WriteLine("Taking turn of a plant");
             Act();
         }
     }

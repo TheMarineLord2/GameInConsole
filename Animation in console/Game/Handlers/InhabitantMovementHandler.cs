@@ -28,7 +28,7 @@ namespace SimulationGame.Game.Handlers
         {
             if (World.This().GetNumberOfFreeSpaces()== 0)
             {
-                Console.WriteLine("inhabitant: No free space is aviable \n" +
+                Console.WriteLine("IInitiationHandler: Inhabitant: No free space is aviable \n" +
                 "Returning illegal place.\n");
                 return false;
             }
@@ -65,17 +65,31 @@ namespace SimulationGame.Game.Handlers
         {
             int viablePlaces = 0;
             List<Field> result = new();
+            // take possible seeing range
             for (int i = 0; i < range * 2 + 1; i++)
             {
                 for (int j = 0; j < range * 2 + 1; j++)
                 {
-                    if (CheckIfLegal(new Point(i, j)))
+                    // offset it by current localisation
+                    if (CheckIfLegal(new Point(i + home.X-1, j + home.Y-1)))
                     {
-                        result.Add(World.This().GetField(new Point(i, j)));
+                        result.Add(World.This().GetField(new Point(i + home.X-1, j + home.Y-1)));
                         viablePlaces++;
                     }
                 }
             }
+
+            // Write avaible spaces
+            Console.WriteLine("Avaiable places are:");
+            for (int i = 0; i < viablePlaces; i++)
+            {
+                Console.Write("P:" + i + " {" + result[i].localisation.X + ","+ result[i].localisation.Y + "}");
+                if (result[i].inhabitant == null) { Console.Write("; "); }
+                else { Console.Write("==>" + result[i].inhabitant.GetType()+";  "); }
+            }
+            Console.WriteLine();
+
+
             return result;
         }
 

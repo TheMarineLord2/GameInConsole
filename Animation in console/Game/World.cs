@@ -64,10 +64,10 @@ namespace SimulationGame.Game
         
         public void TakeATurn()
         {
-            rearrangeInhabitantList();
             turnNumber++;
             print();
             callActions();
+            rearrangeInhabitantList();
         }
         
         public int GetNumberOfFreeSpaces()
@@ -102,6 +102,12 @@ namespace SimulationGame.Game
             {
                 inhabitantList = new();
             }
+        }
+
+        public void DeleteInhab(IInhabitant mob) 
+        {
+            Console.WriteLine("Deleting " + mob.GetType());
+            inhabitantList.Remove(mob);
         }
 
 
@@ -174,7 +180,7 @@ namespace SimulationGame.Game
             foreach(IInhabitant mob in newBornInhabitantBuffor)
             {
                 inhabitantList.Add(mob);
-                Console.WriteLine("inhabitant " + mob.GetLocalisation() + " added to newBornInhabitantBuffor");
+                Console.WriteLine(mob.GetType() +" "+ mob.GetLocalisation() + " added to newBornInhabitantBuffor");
             }
             newBornInhabitantBuffor = new();
             inhabitantList = getInhabPrintQueue();
@@ -184,7 +190,7 @@ namespace SimulationGame.Game
         {
             foreach (IInhabitant inhabitant in inhabitantList)
             {
-                Console.WriteLine("Taking turn of " + inhabitant.ToString());
+                Console.WriteLine("Taking turn of " + inhabitant.GetType());
                 inhabitant.TakeTurn();
             }
         }

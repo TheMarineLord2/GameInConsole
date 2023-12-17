@@ -7,6 +7,9 @@ Console.WriteLine("Hello, World!");
 World world = World.This();
 new Dandelion();
 new Dandelion();
+new Sheep();
+new Sheep();
+new Sheep();
 string ifTerminateGame = "1";
 while (ifTerminateGame != "0")
 {

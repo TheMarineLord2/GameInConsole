@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,32 +14,39 @@ namespace SimulationGame.Game.NPCs
         protected virtual void Act() 
         {
             Field destination = pickDestination(lookAround(_movementRange));
-
-            if (destination.inhabitant == null) { move(destination); }
-            else 
+            if(destination.localisation == new Point(-1, -1))
             {
-                // attack and decide what to do
-                switch (getBattleResults(destination.inhabitant))
-                {
-                    case Interfaces.BattleResults.WIN:
-                        {
-                            destination.inhabitant.Die();
-                            move(destination);
-                            break;
-                        }
-                    case Interfaces.BattleResults.LOSS:
-                        {
-                            this.Die();
-                            break;
-                        }
-                        case Interfaces.BattleResults.DRAW:
-                        {
-                            // be passive
-                            break;
-                        }
-
-                } 
+                // do not move. Animal is still able to perform any necessary actions
             }
+            else {
+                if (destination.inhabitant == null) { move(destination); }
+                else
+                {
+                    // attack and decide what to do
+                    switch (getBattleResults(destination.inhabitant))
+                    {
+                        case Interfaces.BattleResults.WIN:
+                            {
+                                destination.inhabitant.Die();
+                                move(destination);
+                                break;
+                            }
+                        case Interfaces.BattleResults.LOSS:
+                            {
+                                this.Die();
+                                break;
+                            }
+                        case Interfaces.BattleResults.DRAW:
+                            {
+                                // be passive
+                                break;
+                            }
+
+                    }
+                }
+            }
+
+            
         }
         public override void TakeTurn()
         {

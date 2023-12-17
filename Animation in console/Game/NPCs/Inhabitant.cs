@@ -30,7 +30,6 @@ namespace SimulationGame.Game.NPCs
         protected string _visualRepr;
         protected int _strength;
         protected int _initiative;
-        protected Inhabitant? _myType;
         protected bool _isAlive;
         protected World _home;
 
@@ -48,7 +47,6 @@ namespace SimulationGame.Game.NPCs
         
         public virtual void TakeTurn() { }
         
-        public Inhabitant? GetMyType() { return _myType; }
         public void Die()
         {
             // change status of object.
@@ -65,27 +63,35 @@ namespace SimulationGame.Game.NPCs
             _strength = 0;
             _initiative = 0;
             _isAlive = false;
-            _myType = this;
 
         }
         
         protected virtual void reproduce() { }
 
-        // ------   should be kept protected
         protected void move(Field destination)
         {
-            throw new NotImplementedException();
+            // check if field is not taken by any means
+            // You can do this twice. preferabbly take it from _home
+            if (destination.inhabitant == null)
+            {
+                _localisation = destination.localisation;
+            }
         }
 
         protected void setLocalisation(Point localisation)
         {
             _localisation = localisation;
         }
+
+        protected virtual List<Field> filterThroughFields(List<Field> fields) { return fields; }
+
         protected Field pickDestination(List<Field> fields)
         {
+            fields = filterThroughFields(fields);
             int rng = new Random().Next(0,fields.Count());
             return fields[rng];
         }
+
         protected BattleResults getBattleResults<T> (T defender) where T : IInhabitant
         {
             int enemyStrength = defender.GetStrength();

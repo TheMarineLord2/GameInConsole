@@ -18,11 +18,11 @@ namespace SimulationGame.Game.NPCs
         {
             overrideSpiecesData();
             _localisation = InhabitantMovementHandler.GetAnyRandomPlace();
-            if (_localisation == new Point(-1, -1)) {}
+            if (_localisation == new Point(-1, -1)) { }
             else
             {
-                Dandelion copy= this;
-                InhabitantMovementHandler.callIInitiationHandler(ref copy) ;
+                Dandelion copy = this;
+                InhabitantMovementHandler.callIInitiationHandler(ref copy);
             }
         }
         protected Dandelion(Point destination)
@@ -38,7 +38,6 @@ namespace SimulationGame.Game.NPCs
             _strength = 0;
             _initiative = 2;
             _isAlive = true;
-            _myType = this;
         }
         // ---------------------------
         protected override void reproduce()
