@@ -5,8 +5,7 @@ using SimulationGame.Game.NPCs;
 
 Console.WriteLine("Hello, World!");
 World world = World.This();
-new Dandelion();
-new Dandelion();
+new Sheep();
 new Sheep();
 new Sheep();
 new Sheep();

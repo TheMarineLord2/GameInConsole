@@ -16,6 +16,7 @@ namespace SimulationGame.Game.NPCs
         // Simple weed
         public Dandelion()
         {
+            Console.WriteLine("Called constructor of a dandelion");
             overrideSpiecesData();
             _localisation = InhabitantMovementHandler.GetAnyRandomPlace();
             if (_localisation == new Point(-1, -1)) { }
@@ -42,7 +43,7 @@ namespace SimulationGame.Game.NPCs
         // ---------------------------
         protected override void reproduce()
         {
-            if(new Random().Next(4)==0 )
+            if (new Random().Next(3) == 0)
             new Dandelion();
         }
     }

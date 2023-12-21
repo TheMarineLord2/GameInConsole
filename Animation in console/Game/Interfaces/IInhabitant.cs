@@ -23,5 +23,6 @@ namespace SimulationGame.Game.Interfaces
         int GetStrength();
         void TakeTurn();
         void Print();
+        bool IsAlive();
     }
 }

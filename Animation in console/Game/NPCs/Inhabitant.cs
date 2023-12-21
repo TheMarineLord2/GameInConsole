@@ -41,6 +41,8 @@ namespace SimulationGame.Game.NPCs
             return _strength;
         }
 
+        public bool IsAlive() { return _isAlive; }
+
         public int GetInitiative() { return _initiative; }
         
         public void Print() { Console.Write(_visualRepr); }
@@ -52,8 +54,7 @@ namespace SimulationGame.Game.NPCs
             // change status of object.
             // remove from World
             // let the C# deconstruct it
-            Field myField = _home.GetField(_localisation);
-            myField.inhabitant = null;
+            _isAlive = false;
         }
 
         // ------    protected methods
@@ -72,7 +73,7 @@ namespace SimulationGame.Game.NPCs
         {
             // check if field is not taken by any means
             // You can do this twice. preferabbly take it from _home
-            if (destination.inhabitant == null)
+            if (destination.inhabitant == null || destination.inhabitant.IsAlive()==false)
             {
                 _localisation = destination.localisation;
             }

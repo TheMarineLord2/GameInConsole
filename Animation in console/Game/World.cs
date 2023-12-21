@@ -44,7 +44,7 @@ namespace SimulationGame.Game
         private int turnNumber = 0;
 
         // world propeties:
-        private const int volume = 7;
+        private const int volume = 2;
         private const string emptyFieldRepresentation = "   ";
         private const string gapBetweenFields = "\t";
         private const ConsoleColor backgroundColor = ConsoleColor.Black;
@@ -65,9 +65,11 @@ namespace SimulationGame.Game
         public void TakeATurn()
         {
             turnNumber++;
+            cleanInhabitantListAndAddNewInhabitants();
             print();
+            sortInhabitantListByInitiative();
             callActions();
-            rearrangeInhabitantList();
+            //print all inhabs in a list
         }
         
         public int GetNumberOfFreeSpaces()
@@ -102,12 +104,6 @@ namespace SimulationGame.Game
             {
                 inhabitantList = new();
             }
-        }
-
-        public void DeleteInhab(IInhabitant mob) 
-        {
-            Console.WriteLine("Deleting " + mob.GetType());
-            inhabitantList.Remove(mob);
         }
 
 
@@ -176,22 +172,74 @@ namespace SimulationGame.Game
             return resultQ;
         }
         
-        private void rearrangeInhabitantList() {
-            foreach(IInhabitant mob in newBornInhabitantBuffor)
+        private void cleanInhabitantListAndAddNewInhabitants()
+        {
+            dealWithDeadInhabitants();
+            addNewInhabitantsFromBuffer();
+        }
+
+        private void dealWithDeadInhabitants()
+        {
+            List<IInhabitant> copyOfInhabitantList = new(inhabitantList);
+            foreach(IInhabitant inhab in copyOfInhabitantList)
+            {
+                if (inhab.IsAlive()==false)
+                {
+                    deleteInhab(inhab);
+                }
+            }
+        }
+
+        private void addNewInhabitantsFromBuffer()
+        {
+            foreach (IInhabitant mob in newBornInhabitantBuffor)
             {
                 inhabitantList.Add(mob);
-                Console.WriteLine(mob.GetType() +" "+ mob.GetLocalisation() + " added to newBornInhabitantBuffor");
+                // Console.WriteLine(mob.GetType() + " " + mob.GetLocalisation() + " added to newBornInhabitantBuffor");
             }
             newBornInhabitantBuffor = new();
             inhabitantList = getInhabPrintQueue();
+        }
+
+        private void sortInhabitantListByInitiative() 
+        {
+            for(int i=0; i<inhabitantList.Count(); i++)
+            {
+                for (int I=0; I<inhabitantList.Count; I++)
+                {
+                    if (inhabitantList[i].GetInitiative() < inhabitantList[I].GetInitiative())
+                    {
+                        IInhabitant temp = inhabitantList[i];
+                        inhabitantList[i] = inhabitantList[I];
+                        inhabitantList[I] = temp;
+                    }
+                }
+            }
+            for(int i=0; i<inhabitantList.Count(); i++)
+            {
+                Console.WriteLine(inhabitantList[i].GetType() + " - " + inhabitantList[i].GetLocalisation());
+            }
+
+        }
+        private void deleteInhab(IInhabitant mob)
+        {
+            Console.WriteLine("Deleting " + mob.GetType() + mob.GetLocalisation());
+            inhabitantList.Remove(mob);
         }
 
         private void callActions()
         {
             foreach (IInhabitant inhabitant in inhabitantList)
             {
-                Console.WriteLine("Taking turn of " + inhabitant.GetType());
-                inhabitant.TakeTurn();
+                if (inhabitant.IsAlive())
+                {
+                    //Console.WriteLine("Taking turn of " + inhabitant.GetType());
+                    inhabitant.TakeTurn();
+                }
+                else
+                {
+                    //Console.WriteLine("Current inhabitant is dead. Moving to next one");
+                }
             }
         }
         

@@ -80,14 +80,14 @@ namespace SimulationGame.Game.Handlers
             }
 
             // Write avaible spaces
-            Console.WriteLine("Avaiable places are:");
+            /*Console.WriteLine("Avaiable places are:");
             for (int i = 0; i < viablePlaces; i++)
             {
                 Console.Write("P:" + i + " {" + result[i].localisation.X + ","+ result[i].localisation.Y + "}");
                 if (result[i].inhabitant == null) { Console.Write("; "); }
                 else { Console.Write("==>" + result[i].inhabitant.GetType()+";  "); }
             }
-            Console.WriteLine();
+            Console.WriteLine();*/
 
 
             return result;
